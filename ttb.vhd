@@ -51,10 +51,9 @@ ARCHITECTURE behavior OF ttb IS
          key_lenght : IN  std_logic_vector(1 downto 0);
          enc : IN  std_logic;
 			ROUND : OUT  std_logic_vector(3 downto 0);
-         data_out0 : OUT  std_logic_vector(7 downto 0);
-         data_out1 : OUT  std_logic_vector(7 downto 0);
-         data_out2 : OUT  std_logic_vector(7 downto 0);
-         data_out3 : OUT  std_logic_vector(7 downto 0)
+         data_out0, data_out1,
+			data_out2, data_out3 : out std_logic_vector (7 downto 0);
+			valid_out							: out std_logic
         );
     END COMPONENT;
     
@@ -71,14 +70,13 @@ ARCHITECTURE behavior OF ttb IS
    signal enc : std_logic := '0';
 
  	--Outputs
-   signal data_out0 : std_logic_vector(7 downto 0);
-   signal data_out1 : std_logic_vector(7 downto 0);
-   signal data_out2 : std_logic_vector(7 downto 0);
-   signal data_out3 : std_logic_vector(7 downto 0);
+	signal data_out0, data_out1,
+			data_out2, data_out3				: std_logic_vector (7 downto 0);
 	signal ROUND : std_logic_vector(3 downto 0);
+	signal valid_out							: std_logic;
 
    -- Clock period definitions
-   constant CLK_period : time := 10 ns;
+   constant CLK_period : time := 20 ns;
  
 BEGIN
  
@@ -97,7 +95,8 @@ BEGIN
           data_out0 => data_out0,
           data_out1 => data_out1,
           data_out2 => data_out2,
-          data_out3 => data_out3
+          data_out3 => data_out3,
+			 valid_out => valid_out
         );
 
    -- Clock process definitions
@@ -122,51 +121,62 @@ BEGIN
 		enc <= '1';
 		keywords <= X"09cf4f3c" & X"ABF71588" & X"28AED2A6" &X"2B7E1516";
 		
-		in0 <= X"32";
-		in1 <= X"43";
-		in2 <= X"F6";
-		in3 <= X"A8";
-		wait for 20 ns;
-
-		in0 <= X"88";
-		in1 <= X"5A";
-		in2 <= X"30";
-		in3 <= X"8D";
-		wait for 10 ns;
-		
-		in0 <= X"31";
-		in1 <= X"31";
-		in2 <= X"98";
-		in3 <= X"A2";
-		wait for 10 ns;
-		
-		in0 <= X"E0";
-		in1 <= X"37";
-		in2 <= X"07";
-		in3 <= X"34";
-		wait for 45 ns;
-		keywords <= X"2a6c7605" & X"23a33939" & X"88542cb1" &X"a0fafe17";
+		in0 <= X"32"; in1 <= X"43"; in2 <= X"F6"; in3 <= X"A8";
 		wait for 60 ns;
-		
+		in0 <= X"88"; in1 <= X"5A"; in2 <= X"30"; in3 <= X"8D";
+		wait for 20 ns;
+		in0 <= X"31"; in1 <= X"31"; in2 <= X"98"; in3 <= X"A2";
+		wait for 20 ns;
+		in0 <= X"E0"; in1 <= X"37"; in2 <= X"07"; in3 <= X"34";
+		wait for 110 ns;
+		keywords <= X"2a6c7605" & X"23a33939" & X"88542cb1" &X"a0fafe17";
+		wait for 120 ns;
 		keywords <= X"7359f67f" & X"5935807a" & X"7a96b943" &X"f2c295f2";
-		wait for 70 ns;
-		
+		wait for 140 ns;
 		keywords <= X"6D7A883B" & X"1E237E44" & X"4716FE3E" &X"3D80477D";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"DB0BAD00" & X"b671253B" & X"A8525B7F" &X"EF44A541";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"11F915BC" & X"CAF2B8BC" & X"7C839D87" &X"D4D1C6F8";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"CA0093FD" & X"DBF98641" & X"110B3EFD" &X"6D88A37A";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"4EA6DC4F" & X"84A64FB2" & X"5F5FC9F3" &X"4E54F70E";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"7F8D292F" & X"312BF560" & X"B58DBAD2" &X"EAD27321";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"575C006E" & X"28D12941" & X"19FADC21" &X"AC7766F3";
-		wait for 70 ns;
+		wait for 140 ns;
 		keywords <= X"B6630CA6" & X"E13F0CC8" & X"C9EE2589" &X"D014F9A8";
-		wait for 70 ns;
+		wait for 140 ns;
+
+--		wait for 30 ns;
+--		in0 <= X"88"; in1 <= X"5A"; in2 <= X"30"; in3 <= X"8D";
+--		wait for 10 ns;
+--		in0 <= X"31"; in1 <= X"31"; in2 <= X"98"; in3 <= X"A2";
+--		wait for 10 ns;
+--		in0 <= X"E0"; in1 <= X"37"; in2 <= X"07"; in3 <= X"34";
+--		wait for 55 ns;
+--		keywords <= X"2a6c7605" & X"23a33939" & X"88542cb1" &X"a0fafe17";
+--		wait for 60 ns;
+--		keywords <= X"7359f67f" & X"5935807a" & X"7a96b943" &X"f2c295f2";
+--		wait for 70 ns;
+--		keywords <= X"6D7A883B" & X"1E237E44" & X"4716FE3E" &X"3D80477D";
+--		wait for 70 ns;
+--		keywords <= X"DB0BAD00" & X"b671253B" & X"A8525B7F" &X"EF44A541";
+--		wait for 70 ns;
+--		keywords <= X"11F915BC" & X"CAF2B8BC" & X"7C839D87" &X"D4D1C6F8";
+--		wait for 70 ns;
+--		keywords <= X"CA0093FD" & X"DBF98641" & X"110B3EFD" &X"6D88A37A";
+--		wait for 70 ns;
+--		keywords <= X"4EA6DC4F" & X"84A64FB2" & X"5F5FC9F3" &X"4E54F70E";
+--		wait for 70 ns;
+--		keywords <= X"7F8D292F" & X"312BF560" & X"B58DBAD2" &X"EAD27321";
+--		wait for 70 ns;
+--		keywords <= X"575C006E" & X"28D12941" & X"19FADC21" &X"AC7766F3";
+--		wait for 70 ns;
+--		keywords <= X"B6630CA6" & X"E13F0CC8" & X"C9EE2589" &X"D014F9A8";
+--		wait for 70 ns;
 
       wait;
    end process;
